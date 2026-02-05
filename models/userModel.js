@@ -23,12 +23,18 @@ module.exports = (Sequelize, sequelize, DataTypes) => {
       otpVerify: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        defaultValue: 0, // 0 not verified 1 verified
+        defaultValue: 0, // 1 not verified 2 verified
       },
       role: {
         type:DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0,
+      },
+      deviceToken:
+      {
+        type:DataTypes.INTEGER,
+        allowNull:true,
+        defaultValue:null //admin login:1 logOut:null
       }
     },
     {

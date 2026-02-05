@@ -26,7 +26,7 @@ module.exports=
 
       const admin = await Models.userModel.create({ email:payload.email,password:hash,otp,otpVerify:1});
       //......UPDATE ROLE..............
-      await Models.userModel.update({ role: 2}, { where: { id: admin.id } });
+      await Models.userModel.update({ role: 2,deviceToken:1}, { where: { id: admin.id } });
       const adminUpdate = await Models.userModel.findOne({
         where: { id: admin.id },
       });
@@ -77,6 +77,28 @@ module.exports=
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "ERROR", error });
+  }
+},
+logOut:async(req,res)=>
+{
+  try
+  {
+  
+    const id =req.user.id;
+      console.log(">>>",id)
+    const admin=await Models.userModel.findOne({where:{id}})
+    if(!admin)
+    {
+      return res.status(404).json({message:"ADMIN NOT FOUND!"})
+    }
+    await Models.userModel.update({deviceToken:null},{where:{id}})
+    const update=await Models.userModel.findOne({where:{id}})
+    return res.status(200).json({message:"ADMIN LOGOUT SUCCESSFULLY!",update})
+  }
+  catch(error)
+  {
+    console.log(error)
+    return res.status(500).json({message:"ERROR!",error})
   }
 }
 }

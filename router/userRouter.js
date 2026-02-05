@@ -4,4 +4,5 @@ const{authentication}=require('../middleware/authentication')
 const router=express.Router();
 router.post('/adminLogin',adminController.adminLogin)
 router.post('/otpVerify/:email',authentication,adminController.otpVerify)
+router.post('/logOut',authentication,adminController.logOut)
 module.exports=router
