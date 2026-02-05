@@ -23,7 +23,7 @@ module.exports = (Sequelize, sequelize, DataTypes) => {
       otpVerify: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        defaultValue: 0, // 1 not verified 2 verified
+        defaultValue: 1, // 1 not verified 2 verified
       },
       role: {
         type:DataTypes.INTEGER,

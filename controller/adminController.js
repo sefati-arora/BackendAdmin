@@ -5,11 +5,6 @@ const jwt=require("jsonwebtoken")
 const commonHelper=require('../helper/commonHelper');
 const helper=require('../helper/validation');
 const argon2=require("argon2");
-const otpManager = require("node-twillo-otp-manager")(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN,
-  process.env.TWILIO_SERVICE_SID
-);
 module.exports=
 {
       adminLogin: async (req, res) => {
@@ -31,10 +26,9 @@ module.exports=
         where: { id: admin.id },
       });
 
-      console.log("Email being sent to:", payload.email);
+      console.log("Email:", payload.email);
       //OTP SEND..................
         const otpSend= await commonHelper.otpSendLinkHTML(req, payload.email, otp);
-        console.log(`OTP sent (${payload.email}): ${otp}`);
         console.log(otpSend)
 
         //TOKEN CREATION...................
