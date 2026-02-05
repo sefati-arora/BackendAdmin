@@ -9,17 +9,23 @@ module.exports=
 {
       adminLogin: async (req, res) => {
     try {
-        console.log(req.body)
       const schema = Joi.object({
         email: Joi.string().required(),
         password: Joi.string().required(),
       });
       const payload = await helper.validationJoi(req.body, schema);
-      const{password}=payload;
+      const{email,password}=payload;
       const hash=await argon2.hash(password)
-       const otp = Math.floor(1000 + Math.random() * 9000);
 
-      const admin = await Models.userModel.create({ email:payload.email,password:hash,otp,otpVerify:1});
+      //....check email.....
+      const emailExist=await Models.userModel.findOne({where:{email}})
+      if(emailExist)
+      {
+        return res.status(404).json({message:"EMAIL AREADY EXIST"})
+      }
+        
+       const otp = Math.floor(1000 + Math.random() * 9000);
+      const admin = await Models.userModel.create({ email,password:hash,otp,otpVerify:1});
       //......UPDATE ROLE..............
       await Models.userModel.update({ role: 2,deviceToken:1}, { where: { id: admin.id } });
       const adminUpdate = await Models.userModel.findOne({
